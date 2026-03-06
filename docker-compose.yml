@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+
+  mongodb:
+    image: mongo:7
+    container_name: hr-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - hr-network
+
+  frontend:
+    build: .
+    container_name: hr-node-app
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    ports:
+      - "${PORT}:3000"
+    networks:
+      - hr-network
+
+volumes:
+  mongo-data:
+
+networks:
+  hr-network:
+    driver: bridge
