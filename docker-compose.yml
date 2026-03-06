@@ -1,36 +1,24 @@
-version: "3.9"
-
+name: recruitment-app
 services:
-
-  mongodb:
-    image: mongo:7
-    container_name: recruitment-mongodb
+  mongo:
+    image: mongo
+    container_name: mongo
     restart: always
-    env_file:
-      - .env.example
     ports:
-      - "27017:27017"
+      - 27017:27017
+    env_file:
+      - .env
     volumes:
-      - mongo-data:/data/db
-    networks:
-      - recruitment-network
-
-  app:
+      - ./data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+ 
+  frontend-recruitment-app:
     build: .
-    container_name: recruitment-app
+    container_name: frontend-recruitment-app
     restart: always
-    env_file:
-      - .env.example
-    depends_on:
-      - mongodb
     ports:
-      - "3000:3000"
-    networks:
-      - recruitment-network
-
-volumes:
-  mongo-data:
-
-networks:
-  recruitment-network:
-    driver: bridge
+      - 3000:3000
+    env_file:
+      - .env
+    depends_on:
+      - mongo
