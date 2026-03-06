@@ -1,24 +1,41 @@
-name: recruitment-app
+version: "3.9"
+
 services:
+
   mongo:
     image: mongo
     container_name: mongo
     restart: always
-    ports:
-      - 27017:27017
-    env_file:
-      - .env
     volumes:
       - ./data:/data/db
-      - ./mongo-init/init.js:/docker-entrypoint-initdb.d/mongo-init/init.js
- 
-  frontend-recruitment-app:
+      - ./mongo-init/init.js:/docker-entrypoint-initdb.d/init.js
+    networks:
+      - backend-net
+
+  node-app:
     build: .
-    container_name: frontend-recruitment-app
+    container_name: node-app
     restart: always
-    ports:
-      - 3000:3000
     env_file:
       - .env
     depends_on:
       - mongo
+    networks:
+      - backend-net
+
+  api-gateway:
+    image: nginx:latest
+    container_name: api-gateway
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - node-app
+    networks:
+      - frontend-net
+      - backend-net
+
+networks:
+  frontend-net:
+  backend-net:
