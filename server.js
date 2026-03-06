@@ -54,7 +54,7 @@ let db;
 MongoClient.connect(MONGO_URI, { useUnifiedTopology: true })
   .then(client => {
     db = client.db(DB_NAME);
-    app.listen(PORT,"0.0.0.0", () => console.log(`Server running on http://localhost:${PORT}`));
+    app.listen(PORT,"0.0.0.0", () => console.log(`Server running on ${PORT}`));
   })
   .catch(err => console.error('MongoDB connection error:', err));
 
