@@ -3,11 +3,6 @@ kind: ConfigMap
 metadata:
   name: recruitment-app-config
 data:
-  NODE_ENV: "production"
   PORT: "3000"
   DB_NAME: "hr_system"
-  MONGO_URI: "mongodb://rootuser:rootpassword@mongo:27017/hr_system?authSource=rootuser"
-  MONGO_USERNAME: "rootuser"
-  MONGO_PASSWORD: "rootpassword"
-  DEFAULT_ADMIN_ID: "project"
-  DEFAULT_ADMIN_PASSWORD: "project123"
+  MONGO_URI: "mongodb://mongo:27017/hr_system"
